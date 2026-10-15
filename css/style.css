@@ -1,0 +1,301 @@
+/* CSS tambahan di luar Tailwind */
+
+:root {
+  --night: #07081a;
+  --mist: #eceeff;
+  --gold: #ffcf4a;
+  --glow: #4f5bff;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  background: var(--night);
+}
+
+body {
+  background:
+    radial-gradient(900px 500px at 100% 0%, rgba(79, 91, 255, 0.12), transparent 70%),
+    var(--night);
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--night);
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: 60;
+  background: var(--gold);
+  color: var(--night);
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+}
+.skip:focus { left: 0; }
+
+/* ---------- Hero ---------- */
+.spot {
+  position: absolute;
+  inset: 0;
+  z-index: -5;
+  pointer-events: none;
+  background: radial-gradient(
+    640px circle at var(--x, 72%) var(--y, 28%),
+    rgba(79, 91, 255, 0.4),
+    transparent 62%
+  );
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: -4;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Susunan hero: HP = foto, nama, teks. Desktop = teks kiri + foto kanan, nama di bawah. */
+.hero-inner {
+  display: grid;
+  align-content: end;
+  min-height: 100svh;
+  gap: 1.75rem 3rem;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "photo"
+    "name"
+    "text";
+}
+.hero-text  { grid-area: text; }
+.hero-name  { grid-area: name; min-width: 0; }
+.portrait   { grid-area: photo; }
+
+@media (min-width: 768px) {
+  .hero-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+    grid-template-areas:
+      "text photo"
+      "name name";
+    align-items: end;
+  }
+}
+
+/* Foto: kartu miring dengan latar emas, lurus saat di-hover */
+.portrait {
+  position: relative;
+  width: min(100%, 300px);
+  aspect-ratio: 1 / 1;
+  margin: 0.75rem 0.75rem 0.25rem;
+  justify-self: start;
+}
+@media (min-width: 768px) {
+  .portrait {
+    width: 100%;
+    margin: 0.75rem 0.75rem 0.5rem;
+    justify-self: end;
+  }
+}
+.portrait-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.75rem;
+  background: var(--gold);
+  transform: rotate(-6deg);
+  transition: transform 0.35s ease;
+}
+.portrait-img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 30px 80px -20px rgba(79, 91, 255, 0.7);
+  transform: rotate(2deg);
+  transition: transform 0.35s ease;
+}
+.portrait:hover .portrait-back { transform: rotate(-2deg); }
+.portrait:hover .portrait-img { transform: rotate(0deg); }
+
+.status::before {
+  content: "";
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-right: 0.6rem;
+  border-radius: 50%;
+  background: var(--gold);
+  vertical-align: 0.05em;
+}
+
+/* Nama besar (huruf dipecah oleh script) */
+.name {
+  font-size: clamp(3.2rem, 16.5vw, 14rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  font-weight: 650;
+}
+.name .line {
+  display: block;
+  white-space: nowrap;
+}
+.name .ch {
+  display: inline-block;
+  font-variation-settings: "wght" 650;
+}
+.name .line:first-child .ch {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--mist);
+}
+@media (min-width: 768px) {
+  .name .line:first-child .ch { -webkit-text-stroke-width: 2px; }
+}
+
+/* ---------- Tombol ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.6rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  color: var(--mist);
+  font-weight: 600;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn:hover {
+  background: var(--mist);
+  border-color: var(--mist);
+  color: var(--night);
+}
+.btn.btn-primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--night);
+}
+.btn.btn-primary:hover {
+  background: var(--mist);
+  border-color: var(--mist);
+}
+
+/* ---------- Marquee ---------- */
+.marquee {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 1.75rem;
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  animation: marquee 38s linear infinite;
+}
+.marquee i {
+  font-style: normal;
+  color: var(--gold);
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- Judul section ---------- */
+.section-title {
+  margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* ---------- Kartu kaca (bento) ---------- */
+.card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.75rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(79, 91, 255, 0.3),
+    transparent 60%
+  );
+  transition: opacity 0.25s;
+}
+.card:hover::before { opacity: 1; }
+.card > * { position: relative; }
+
+/* ---------- Kartu film ---------- */
+.film {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+  min-height: 27rem;
+  padding: 3.4rem 1.6rem 3.2rem;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  color: #fff;
+}
+.film::before,
+.film::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 22px;
+  background: #05060f
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='22'%3E%3Crect x='6' y='6' width='16' height='10' rx='3' fill='%23ffffff' fill-opacity='.8'/%3E%3C/svg%3E")
+    repeat-x;
+}
+.film::before { top: 0; }
+.film::after { bottom: 0; }
+.film-1 { background: linear-gradient(165deg, #3b45ff 0%, #1b2090 55%, #0a0b24 100%); }
+.film-2 { background: linear-gradient(165deg, #a9690f 0%, #4b2c0b 55%, #0d0b16 100%); }
+.film-3 { background: linear-gradient(165deg, #138a86 0%, #0b4258 55%, #080c1c 100%); }
+
+/* ---------- Kontak ---------- */
+.contact-glow {
+  position: absolute;
+  inset: auto -10% -40% -10%;
+  height: 80%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(79, 91, 255, 0.4), transparent 75%);
+}
+
+/* ---------- Muncul saat di-scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  * { transition-duration: 0.01ms !important; }
+}
